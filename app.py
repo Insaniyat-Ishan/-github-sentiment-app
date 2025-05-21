@@ -26,15 +26,33 @@ def analyze():
     results = sentiment_model(messages)
     labels = [r['label'] for r in results]
 
+    # Count and determine project health
+    # Count and determine project health
     count = Counter(labels)
-    if count['NEGATIVE'] > (count['POSITIVE'] + count['NEUTRAL']):
+
+    # Extract counts
+    anger = count['Anger']
+    frustration = count['Frustration']
+    joy = count['Joy']
+    satisfaction = count['Satisfaction']
+    excitement = count['Excitement']
+    sadness = count['Sadness']
+    neutral = count['Neutral']
+
+    positive = joy + satisfaction + excitement
+    negative = anger + frustration + sadness
+
+    # Determine health
+    if negative > positive:
         health = "Unstable"
-    elif count['NEUTRAL'] > (count['POSITIVE'] + count['NEGATIVE']):
+    elif neutral >= max(positive, negative):
         health = "Stable"
     else:
         health = "Healthy"
 
+
     return render_template('index.html', project_health=health, results=zip(messages, labels))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
