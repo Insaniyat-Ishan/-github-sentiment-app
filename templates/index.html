@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub Commit Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+        }
+
+        header {
+            background: linear-gradient(to right, #4CAF50, #388E3C);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            flex-grow: 1;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .health-status {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            background: #e6f4ea;
+            padding: 15px;
+            border-left: 6px solid #4CAF50;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GitHub Commit Sentiment Analysis</h1>
+        <p>Analyze the mood behind your project's commit messages</p>
+    </header>
+
+    <main>
+        <form method="post" enctype="multipart/form-data" action="/analyze">
+            <input type="file" name="file" required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if project_health %}
+        <div class="result">
+            <div class="health-status">Project Health: {{ project_health }}</div>
+
+            <h3 style="margin-top: 30px;">Commit Message Sentiment Summary:</h3>
+            <table>
+                <tr>
+                    <th>Commit Message</th>
+                    <th>Sentiment</th>
+                </tr>
+                {% for message, sentiment in results %}
+                <tr>
+                    <td>{{ message }}</td>
+                    <td>{{ sentiment }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>
